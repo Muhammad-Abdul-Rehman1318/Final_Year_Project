@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  backend:
+    build: ./backendsample
+    container_name: devops-backend
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      MONGO_URI: ${MONGO_URI}
+      PORT: 5000
+    networks:
+      - devops-network
+
+  frontend:
+    build: ./frontendsample
+    container_name: devops-frontend
+    restart: always
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - devops-network
+
+networks:
+  devops-network:
+    driver: bridge

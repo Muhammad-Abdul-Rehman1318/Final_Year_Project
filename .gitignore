@@ -1,0 +1,39 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# React build
+frontendsample/build/
+frontendsample/dist/
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.env
+
+# Selenium
+.selenium/
+geckodriver.log
+chromedriver.log
+
+# Docker
+*.tar
+.dockerignore
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+logs/
+*.log
+
+# Secrets
+.env
+.env.*

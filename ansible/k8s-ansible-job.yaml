@@ -1,0 +1,64 @@
+---
+# Alternative Ansible Setup using Kubernetes Job
+# This runs Ansible configuration directly on AKS nodes
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ansible-playbook
+  namespace: devops-app
+data:
+  playbook.yml: |
+    ---
+    - name: Configure Kubernetes Node
+      hosts: localhost
+      connection: local
+      become: yes
+      
+      tasks:
+        - name: Update apt cache
+          apt:
+            update_cache: yes
+          
+        - name: Install monitoring tools
+          apt:
+            name:
+              - htop
+              - iotop
+              - sysstat
+            state: present
+        
+        - name: Display node information
+          debug:
+            msg:
+              - "Node configured successfully"
+              - "Docker version: {{ lookup('pipe', 'docker --version') }}"
+              - "Kubectl version: {{ lookup('pipe', 'kubectl version --client --short') }}"
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ansible-config-job
+  namespace: devops-app
+spec:
+  template:
+    spec:
+      containers:
+      - name: ansible
+        image: cytopia/ansible:latest
+        command: ["/bin/sh"]
+        args:
+          - -c
+          - |
+            cd /ansible
+            ansible-playbook playbook.yml
+        volumeMounts:
+        - name: playbook
+          mountPath: /ansible
+      volumes:
+      - name: playbook
+        configMap:
+          name: ansible-playbook
+      restartPolicy: Never
+  backoffLimit: 3

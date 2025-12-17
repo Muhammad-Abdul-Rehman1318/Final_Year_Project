@@ -1,0 +1,233 @@
+---
+# ============================================
+# DevOps Lab - Ansible Demo Playbook (Simplified)
+# ============================================
+# This playbook demonstrates Ansible capabilities without requiring root access
+
+- name: System Information and Verification (Web Servers)
+  hosts: webservers
+  gather_facts: yes
+  
+  vars:
+    docker_version: "24.0"
+    nodejs_version: "18"
+    
+  tasks:
+    - name: Display system information
+      debug:
+        msg:
+          - "Hostname: {{ ansible_hostname }}"
+          - "OS: {{ ansible_distribution }} {{ ansible_distribution_version }}"
+          - "Architecture: {{ ansible_architecture }}"
+      tags: [info, always]
+    
+    - name: Check if Docker is installed
+      command: docker --version
+      register: docker_check
+      ignore_errors: yes
+      changed_when: false
+      tags: [verify]
+    
+    - name: Display Docker status
+      debug:
+        msg: "{{ docker_check.stdout if docker_check.rc == 0 else 'Docker not installed' }}"
+      tags: [verify]
+    
+    - name: Check if Nginx is installed
+      command: nginx -v
+      register: nginx_check
+      ignore_errors: yes
+      changed_when: false
+      tags: [verify]
+    
+    - name: Display Nginx status
+      debug:
+        msg: "{{ nginx_check.stderr if nginx_check.rc == 0 else 'Nginx not installed' }}"
+      tags: [verify]
+    
+    - name: Check if Node.js is installed
+      command: node --version
+      register: node_check
+      ignore_errors: yes
+      changed_when: false
+      tags: [verify]
+    
+    - name: Display Node.js status
+      debug:
+        msg: "{{ node_check.stdout if node_check.rc == 0 else 'Node.js not installed' }}"
+      tags: [verify]
+    
+    - name: Check disk space
+      command: df -h /
+      register: disk_space
+      changed_when: false
+      tags: [info]
+    
+    - name: Display disk space
+      debug:
+        msg: "{{ disk_space.stdout_lines }}"
+      tags: [info]
+
+- name: System Information and Verification (App Servers)
+  hosts: appservers
+  gather_facts: yes
+  
+  vars:
+    nodejs_version: "18"
+    
+  tasks:
+    - name: Display system information
+      debug:
+        msg:
+          - "Hostname: {{ ansible_hostname }}"
+          - "OS: {{ ansible_distribution }} {{ ansible_distribution_version }}"
+          - "Architecture: {{ ansible_architecture }}"
+          - "CPU Cores: {{ ansible_processor_vcpus }}"
+          - "Total Memory: {{ ansible_memtotal_mb }} MB"
+      tags: [info, always]
+    
+    - name: Check if Docker is installed
+      command: docker --version
+      register: docker_check
+      ignore_errors: yes
+      changed_when: false
+      tags: [verify]
+    
+    - name: Display Docker status
+      debug:
+        msg: "{{ docker_check.stdout if docker_check.rc == 0 else 'Docker not installed' }}"
+      tags: [verify]
+    
+    - name: Check if Node.js is installed
+      command: node --version
+      register: node_check
+      ignore_errors: yes
+      changed_when: false
+      tags: [verify]
+    
+    - name: Display Node.js status
+      debug:
+        msg: "{{ node_check.stdout if node_check.rc == 0 else 'Node.js not installed' }}"
+      tags: [verify]
+    
+    - name: Check if PM2 is installed
+      command: pm2 --version
+      register: pm2_check
+      ignore_errors: yes
+      changed_when: false
+      tags: [verify]
+    
+    - name: Display PM2 status
+      debug:
+        msg: "{{ pm2_check.stdout if pm2_check.rc == 0 else 'PM2 not installed' }}"
+      tags: [verify]
+    
+    - name: Check memory usage
+      command: free -h
+      register: memory_usage
+      changed_when: false
+      tags: [info]
+    
+    - name: Display memory usage
+      debug:
+        msg: "{{ memory_usage.stdout_lines }}"
+      tags: [info]
+
+- name: Localhost Demonstration
+  hosts: localhost
+  connection: local
+  gather_facts: yes
+  
+  tasks:
+    - name: Display Ansible version
+      debug:
+        msg: "Ansible Version: {{ ansible_version.full }}"
+      tags: [always]
+    
+    - name: Display system information
+      debug:
+        msg:
+          - "Hostname: {{ ansible_hostname }}"
+          - "OS: {{ ansible_distribution }} {{ ansible_distribution_version }}"
+          - "Kernel: {{ ansible_kernel }}"
+          - "Architecture: {{ ansible_architecture }}"
+          - "Python Version: {{ ansible_python_version }}"
+      tags: [info, always]
+    
+    - name: Check current user
+      command: whoami
+      register: current_user
+      changed_when: false
+      tags: [info]
+    
+    - name: Display current user
+      debug:
+        msg: "Current User: {{ current_user.stdout }}"
+      tags: [info]
+    
+    - name: Check if Git is installed
+      command: git --version
+      register: git_check
+      ignore_errors: yes
+      changed_when: false
+      tags: [verify]
+    
+    - name: Display Git status
+      debug:
+        msg: "{{ git_check.stdout if git_check.rc == 0 else 'Git not installed' }}"
+      tags: [verify]
+    
+    - name: Check if Python is installed
+      command: python3 --version
+      register: python_check
+      ignore_errors: yes
+      changed_when: false
+      tags: [verify]
+    
+    - name: Display Python status
+      debug:
+        msg: "{{ python_check.stdout if python_check.rc == 0 else 'Python not installed' }}"
+      tags: [verify]
+    
+    - name: List current directory contents
+      command: ls -la
+      register: dir_contents
+      changed_when: false
+      tags: [info]
+    
+    - name: Display directory contents
+      debug:
+        msg: "{{ dir_contents.stdout_lines[:10] }}"
+      tags: [info]
+    
+    - name: Create a test file
+      copy:
+        content: |
+          # Ansible Test File
+          This file was created by Ansible playbook
+          Date: {{ ansible_date_time.iso8601 }}
+          Hostname: {{ ansible_hostname }}
+        dest: /tmp/ansible-test.txt
+      tags: [demo]
+    
+    - name: Verify test file was created
+      stat:
+        path: /tmp/ansible-test.txt
+      register: test_file
+      tags: [demo]
+    
+    - name: Display test file status
+      debug:
+        msg: "Test file created successfully at /tmp/ansible-test.txt"
+      when: test_file.stat.exists
+      tags: [demo]
+    
+    - name: Summary of tasks completed
+      debug:
+        msg:
+          - "=== Ansible Playbook Execution Summary ==="
+          - "Total plays executed: 3"
+          - "Target hosts: webservers, appservers, localhost"
+          - "Tasks completed successfully"
+          - "Configuration management demonstration complete"
+      tags: [always]
