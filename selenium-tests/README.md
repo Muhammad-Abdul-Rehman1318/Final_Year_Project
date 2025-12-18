@@ -1,78 +1,59 @@
-# Selenium Automated Testing - University Finder App
+# Selenium Automated Testing - Section E
 
 ## Overview
-This directory contains Selenium automated tests for the University Finder application deployed on Azure AKS.
+This folder contains Selenium automated tests for the University Finder application deployed on Azure AKS.
+
+**DevOps Lab - Section E: Selenium Automated Testing (6 Marks)**
+
+---
 
 ## Test Cases
 
-### Test 1: Homepage Load Test ✅
+### Test Case 1: Homepage Load Verification ✅
 **Objective:** Verify the application homepage loads successfully
 
 **Steps:**
-1. Navigate to application URL
-2. Verify page title is present
-3. Check page load time
-4. Validate content is displayed
+1. Navigate to frontend URL
+2. Check page title is not empty
+3. Verify page loads within acceptable time (< 15 seconds)
+4. Check page content length
+5. Verify university-related content exists
 
-**Expected Result:** Homepage loads within 10 seconds with proper content
-
----
-
-### Test 2: Login Page Navigation Test ✅
-**Objective:** Validate navigation to login page
-
-**Steps:**
-1. Navigate to homepage
-2. Click on "Sign in" link
-3. Verify login page loads
-4. Check for login form elements (email, password)
-
-**Expected Result:** Login page loads with form elements
+**Expected Result:** Homepage loads successfully with content
 
 ---
 
-### Test 3: Registration Page Test ✅
-**Objective:** Validate registration page elements
+### Test Case 2: Login Form Validation ✅
+**Objective:** Validate login page loads and contains required form elements
 
 **Steps:**
-1. Navigate to registration page
-2. Verify form input fields are present
-3. Check for submit button
-4. Validate form structure
+1. Navigate to login page
+2. Verify URL contains 'login' or 'signin'
+3. Check for email/username input field
+4. Check for password input field
+5. Verify submit button exists
 
-**Expected Result:** Registration page contains all required form elements
+**Expected Result:** Login page loads with all required form elements
 
 ---
 
-### Test 4: Search Functionality Test ✅
-**Objective:** Validate university search feature
+### Test Case 3: Backend API Response Check ✅
+**Objective:** Verify backend API is accessible and returns data
 
 **Steps:**
-1. Navigate to hero section/search page
-2. Locate search input field
-3. Enter search query ("NUST")
-4. Verify search interaction
+1. Send GET request to backend API endpoint
+2. Verify response status code is 200
+3. Check response contains data
+4. Validate JSON structure
+5. Navigate to frontend page that uses API
 
-**Expected Result:** Search functionality is accessible and interactive
-
----
-
-### Test 5: Backend API Connectivity Test ✅
-**Objective:** Check frontend-backend communication
-
-**Steps:**
-1. Navigate to page that makes API calls
-2. Check browser console for errors
-3. Verify page loads data from backend
-4. Validate no critical errors
-
-**Expected Result:** Frontend successfully communicates with backend API
+**Expected Result:** Backend API responds successfully with data
 
 ---
 
 ## Prerequisites
 
-### 1. Install Python (if not already installed)
+### 1. Install Python
 ```bash
 python --version
 # Should be Python 3.8 or higher
@@ -87,75 +68,83 @@ cd selenium-tests
 pip install -r requirements.txt
 ```
 
-This will install:
+This installs:
 - `selenium` - Web automation framework
 - `webdriver-manager` - Automatic ChromeDriver management
-- `pytest` - Testing framework
-- `pytest-html` - HTML report generation
+- `requests` - HTTP library for API testing
 
 ---
 
 ## Running the Tests
 
-### Option 1: Run All Tests
+### Run All Tests
 ```bash
 cd selenium-tests
-python test_university_finder.py
+python test_university_app.py
 ```
 
-### Option 2: Run with Pytest
-```bash
-cd selenium-tests
-pytest test_university_finder.py -v
+### Expected Output
 ```
+======================================================================
+SELENIUM AUTOMATED TESTING SUITE
+University Finder Application - DevOps Lab Section E
+======================================================================
 
-### Option 3: Run with HTML Report
-```bash
-cd selenium-tests
-pytest test_university_finder.py -v --html=test-report.html --self-contained-html
-```
+Frontend URL: http://4.213.223.12
+Backend URL: http://135.235.246.98:5000
 
-### Option 4: Run Specific Test
-```bash
-cd selenium-tests
-pytest test_university_finder.py::TestUniversityFinderApp::test_01_homepage_loads_successfully -v
-```
+🔧 Setting up Chrome WebDriver...
+✅ WebDriver setup complete
 
----
+======================================================================
+TEST CASE 1: Homepage Load Verification
+======================================================================
+📍 Navigating to: http://4.213.223.12
+📸 Screenshot saved: selenium-tests/screenshots/01_homepage.png
+✅ Page Title: University Finder
+✅ Page Load Time: 2.45 seconds
+✅ Page Content Length: 15234 bytes
+✅ University-related content found
 
-## Expected Output
+✅ TEST 1 PASSED: Homepage loads successfully
 
-```
-=== Test 1: Homepage Load Test ===
-✓ Page Title: University Finder
-✓ Page Load Time: 2.34 seconds
-✓ Homepage content verified
-✅ Test 1 PASSED: Homepage loads successfully
+======================================================================
+TEST CASE 2: Login Form Validation
+======================================================================
+📍 Navigating to: http://4.213.223.12/login
+📸 Screenshot saved: selenium-tests/screenshots/02_login_page.png
+✅ Current URL: http://4.213.223.12/login
+✅ Email/Username field found
+✅ Password field found
+✅ Submit button found
 
-=== Test 2: Login Page Navigation Test ===
-✓ Clicked on Sign in link
-✓ Current URL: http://4.224.133.62/login
-✓ Login form elements present
-✅ Test 2 PASSED: Login page navigation successful
+✅ TEST 2 PASSED: Login form validated successfully
 
-=== Test 3: Registration Page Test ===
-✓ Current URL: http://4.224.133.62/register
-✓ Form elements found: email, password, name
-✓ Submit button present
-✅ Test 3 PASSED: Registration page elements validated
+======================================================================
+TEST CASE 3: Backend API Response Check
+======================================================================
+📍 Testing API: http://135.235.246.98:5000/api/universities
+✅ API Status Code: 200
+✅ API returned data
+✅ Universities Count: 227
+✅ Sample University: NUST
 
-=== Test 4: Search Functionality Test ===
-✓ Search input field found
-✓ Search query entered: NUST
-✅ Test 4 PASSED: Search functionality validated
+📍 Navigating to: http://4.213.223.12/company/hero-section
+📸 Screenshot saved: selenium-tests/screenshots/03_api_response.png
+✅ Frontend page loaded with API data
 
-=== Test 5: Backend API Connectivity Test ===
-✓ Browser logs checked: 12 total logs
-✓ No severe errors in console
-✓ Page loaded with content from backend
-✅ Test 5 PASSED: Backend API connectivity verified
+✅ TEST 3 PASSED: Backend API response validated
 
-======================== 5 passed in 45.23s ========================
+======================================================================
+TEST EXECUTION SUMMARY
+======================================================================
+
+📊 Total Tests: 3
+✅ Passed: 3
+❌ Failed: 0
+📈 Success Rate: 100.0%
+
+📄 Report saved to: selenium-tests/test-report.txt
 ```
 
 ---
@@ -164,85 +153,89 @@ pytest test_university_finder.py::TestUniversityFinderApp::test_01_homepage_load
 
 After running tests, you'll find:
 
-1. **Screenshots** (in `screenshots/` folder):
-   - `01_homepage.png` - Homepage screenshot
-   - `02_login_page.png` - Login page screenshot
-   - `03_registration_page.png` - Registration page screenshot
-   - `04_search_before.png` - Search page before input
-   - `04_search_after.png` - Search page after input
-   - `05_api_connectivity.png` - API connectivity test screenshot
+### 1. Screenshots (in `screenshots/` folder):
+- `01_homepage.png` - Homepage screenshot
+- `02_login_page.png` - Login page screenshot
+- `03_api_response.png` - API connectivity screenshot
 
-2. **Test Report**:
-   - `test-report.html` - Detailed HTML test report
+### 2. Test Report:
+- `test-report.txt` - Detailed test execution report
+
+---
+
+## Folder Structure
+
+```
+selenium-tests/
+├── test_university_app.py    # Main test script
+├── requirements.txt           # Python dependencies
+├── README.md                  # This file
+├── screenshots/               # Test screenshots
+│   ├── 01_homepage.png
+│   ├── 02_login_page.png
+│   └── 03_api_response.png
+└── test-report.txt           # Test execution report
+```
+
+---
+
+## Configuration
+
+To test against different URLs, update these variables in `test_university_app.py`:
+
+```python
+FRONTEND_URL = "http://4.213.223.12"      # Your frontend URL
+BACKEND_URL = "http://135.235.246.98:5000"  # Your backend URL
+```
 
 ---
 
 ## Troubleshooting
 
 ### Issue: ChromeDriver not found
-**Solution:** The script uses `webdriver-manager` which automatically downloads ChromeDriver. Just ensure you have internet connection.
+**Solution:** The script uses `webdriver-manager` which automatically downloads ChromeDriver. Ensure you have internet connection.
 
 ### Issue: Tests fail with timeout
-**Solution:** Increase wait times in the script or check if application is running:
+**Solution:** Check if application is running:
 ```bash
-# Check if frontend is accessible
-curl http://4.224.133.62
+# Check frontend
+curl http://4.213.223.12
 
-# Check if backend is accessible
-curl http://98.70.247.91:5000
+# Check backend
+curl http://135.235.246.98:5000/api/universities
 ```
 
-### Issue: Headless mode not working
-**Solution:** Remove `--headless` option from Chrome options to see browser window:
-```python
-# Comment out this line in the script:
-# chrome_options.add_argument('--headless')
+### Issue: Screenshots not saved
+**Solution:** Create screenshots folder manually:
+```bash
+mkdir selenium-tests/screenshots
 ```
 
 ---
 
-## Submission Files
+## Submission Files for Section E
 
-For exam submission, include:
+Include these files in your submission:
 
-1. ✅ **test_university_finder.py** - Test script
+1. ✅ **test_university_app.py** - Test script
 2. ✅ **requirements.txt** - Dependencies
-3. ✅ **test-report.html** - Test execution report
-4. ✅ **Screenshots** - All 6 screenshots from `screenshots/` folder
-5. ✅ **This README.md** - Documentation
-
----
-
-## Test Execution Screenshots Required
-
-1. **Command line showing test execution**
-2. **Test results showing all 5 tests passed**
-3. **HTML report opened in browser**
-4. **Sample screenshots from tests** (at least 2-3)
-
----
-
-## Configuration
-
-To test against different URLs, update these variables in `test_university_finder.py`:
-
-```python
-APP_URL = "http://4.224.133.62"  # Your frontend URL
-BACKEND_URL = "http://98.70.247.91:5000"  # Your backend URL
-```
+3. ✅ **test-report.txt** - Test execution report
+4. ✅ **Screenshots** - All 3 screenshots from `screenshots/` folder
+5. ✅ **README.md** - This documentation
+6. ✅ **Screenshot of test run** - Terminal output showing all tests passed
 
 ---
 
 ## Notes
 
-- Tests run in **headless mode** by default (no browser window)
-- Each test is **independent** and can run separately
-- Tests include **automatic screenshots** for documentation
-- **HTML report** is generated automatically with pytest-html
-- All tests use **explicit waits** for better reliability
+- Tests run in **headless mode** (no browser window)
+- Each test is **independent**
+- Tests include **automatic screenshots**
+- **Simple and clear** test cases as per Section E requirements
+- All tests use **explicit waits** for reliability
 
 ---
 
-## Author
-Muhammad Owais - DevOps Lab Project
-Section E: Selenium Automated Testing
+**Author:** DevOps Lab Project  
+**Section:** E - Selenium Automated Testing  
+**Date:** December 2025

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selenium Test Report - University Finder</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 40px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .stat-card .value {
+            font-size: 2.5em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 40px;
+            background: #e0e0e0;
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%);
+            width: 50.0%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        .test-results { padding: 40px; }
+        .test-case {
+            background: white;
+            border-left: 5px solid #667eea;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        .test-case.passed { border-left-color: #38ef7d; }
+        .test-case.failed { border-left-color: #f45c43; }
+        .test-status {
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+        }
+        .test-status.passed {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+        .test-status.failed {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+            color: white;
+        }
+        .footer {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Selenium Test Report</h1>
+            <p>University Finder Application - Browser Automation Tests</p>
+        </div>
+        <div class="summary">
+            <div class="stat-card">
+                <h3>Total Tests</h3>
+                <div class="value">6</div>
+            </div>
+            <div class="stat-card">
+                <h3>Passed</h3>
+                <div class="value">3</div>
+            </div>
+            <div class="stat-card">
+                <h3>Failed</h3>
+                <div class="value">3</div>
+            </div>
+            <div class="stat-card">
+                <h3>Success Rate</h3>
+                <div class="value">50.0%</div>
+            </div>
+        </div>
+        <div style="padding: 0 40px;">
+            <div class="progress-bar">
+                <div class="progress-fill">50.0%</div>
+            </div>
+        </div>
+        <div class="test-results">
+            <h2>📋 Test Cases</h2>
+
+            <div class="test-case pass">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <div style="font-size: 1.3em; font-weight: bold;">✅ Test 1: Homepage Loads Successfully</div>
+                    <div class="test-status pass">PASS</div>
+                </div>
+                <div style="color: #666;">📝 Page loaded in 4.62s</div>
+                <div style="color: #999; font-size: 0.9em; margin-top: 10px;">🕐 2025-12-18 10:31:45</div>
+            </div>
+
+            <div class="test-case pass">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <div style="font-size: 1.3em; font-weight: bold;">✅ Test 2: Navigation Functionality</div>
+                    <div class="test-status pass">PASS</div>
+                </div>
+                <div style="color: #666;">📝 Successfully navigated to 2 pages</div>
+                <div style="color: #999; font-size: 0.9em; margin-top: 10px;">🕐 2025-12-18 10:31:55</div>
+            </div>
+
+            <div class="test-case pass">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <div style="font-size: 1.3em; font-weight: bold;">✅ Test 3: Login Form Elements</div>
+                    <div class="test-status pass">PASS</div>
+                </div>
+                <div style="color: #666;">📝 Found 3 form elements</div>
+                <div style="color: #999; font-size: 0.9em; margin-top: 10px;">🕐 2025-12-18 10:31:59</div>
+            </div>
+
+            <div class="test-case fail">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <div style="font-size: 1.3em; font-weight: bold;">❌ Test 4: Backend API Connectivity</div>
+                    <div class="test-status fail">FAIL</div>
+                </div>
+                <div style="color: #666;">📝 Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=143.0.7499.110)
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	0x7ff6949c8245
+	0x7ff6949c82a0
+	0x7ff6947a165d
+	0x7ff69478d202
+	0x7ff6947b27af
+	0x7ff694829a29
+	0x7ff69484a5c2
+	0x7ff6947eac29
+	0x7ff6947eba93
+	0x7ff694cdffe0
+	0x7ff694cda920
+	0x7ff694cf9086
+	0x7ff6949e5744
+	0x7ff6949ee6ec
+	0x7ff6949d1964
+	0x7ff6949d1b15
+	0x7ff6949b7842
+	0x7ffd8a4be8d7
+	0x7ffd8ba2c53c
+</div>
+                <div style="color: #999; font-size: 0.9em; margin-top: 10px;">🕐 2025-12-18 10:32:04</div>
+            </div>
+
+            <div class="test-case fail">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <div style="font-size: 1.3em; font-weight: bold;">❌ Test 5: Responsive Design</div>
+                    <div class="test-status fail">FAIL</div>
+                </div>
+                <div style="color: #666;">📝 Message: invalid session id
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	0x7ff6949c8245
+	0x7ff6949c82a0
+	0x7ff6947a1465
+	0x7ff6947e9d83
+	0x7ff694821ee2
+	0x7ff69481c500
+	0x7ff69481b6f0
+	0x7ff69476b325
+	0x7ff694cdffe0
+	0x7ff694cda920
+	0x7ff694cf9086
+	0x7ff6949e5744
+	0x7ff6949ee6ec
+	0x7ff694769cb8
+	0x7ff694e3e9a8
+	0x7ffd8a4be8d7
+	0x7ffd8ba2c53c
+</div>
+                <div style="color: #999; font-size: 0.9em; margin-top: 10px;">🕐 2025-12-18 10:32:05</div>
+            </div>
+
+            <div class="test-case fail">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <div style="font-size: 1.3em; font-weight: bold;">❌ Test 6: Search Functionality</div>
+                    <div class="test-status fail">FAIL</div>
+                </div>
+                <div style="color: #666;">📝 Message: invalid session id
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	0x7ff6949c8245
+	0x7ff6949c82a0
+	0x7ff6947a1465
+	0x7ff6947e9d83
+	0x7ff694821ee2
+	0x7ff69481c500
+	0x7ff69481b6f0
+	0x7ff69476b325
+	0x7ff694cdffe0
+	0x7ff694cda920
+	0x7ff694cf9086
+	0x7ff6949e5744
+	0x7ff6949ee6ec
+	0x7ff694769cb8
+	0x7ff694e3e9a8
+	0x7ffd8a4be8d7
+	0x7ffd8ba2c53c
+</div>
+                <div style="color: #999; font-size: 0.9em; margin-top: 10px;">🕐 2025-12-18 10:32:06</div>
+            </div>
+
+        </div>
+        <div class="footer">
+            <p><strong>Test Execution Details</strong></p>
+            <p>Frontend: http://4.213.223.12</p>
+            <p>Backend: http://135.235.246.98:5000</p>
+        </div>
+    </div>
+</body>
+</html>

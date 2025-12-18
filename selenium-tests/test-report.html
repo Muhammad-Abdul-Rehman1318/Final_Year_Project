@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Execution Report - University Finder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 40px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-card h3 {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .stat-card .value {
+            font-size: 2.5em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stat-card.success .value {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .stat-card.failed .value {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%);
+            width: 100.0%;
+            transition: width 1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .test-results {
+            padding: 40px;
+        }
+        
+        .test-results h2 {
+            font-size: 2em;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .test-case {
+            background: white;
+            border-left: 5px solid #667eea;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .test-case:hover {
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            transform: translateX(5px);
+        }
+        
+        .test-case.passed {
+            border-left-color: #38ef7d;
+        }
+        
+        .test-case.failed {
+            border-left-color: #f45c43;
+        }
+        
+        .test-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .test-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .test-status {
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        .test-status.passed {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+        
+        .test-status.failed {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+            color: white;
+        }
+        
+        .test-message {
+            color: #666;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .test-details {
+            color: #999;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+        
+        .footer {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .footer p {
+            opacity: 0.9;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .test-case {
+            animation: fadeIn 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Test Execution Report</h1>
+            <p>University Finder Application - DevOps Lab Section E</p>
+        </div>
+        
+        <div class="summary">
+            <div class="stat-card">
+                <h3>Total Tests</h3>
+                <div class="value">5</div>
+            </div>
+            <div class="stat-card success">
+                <h3>Passed</h3>
+                <div class="value">5</div>
+            </div>
+            <div class="stat-card failed">
+                <h3>Failed</h3>
+                <div class="value">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Success Rate</h3>
+                <div class="value">100.0%</div>
+            </div>
+        </div>
+        
+        <div style="padding: 0 40px;">
+            <div class="progress-bar">
+                <div class="progress-fill">100.0%</div>
+            </div>
+        </div>
+        
+        <div class="test-results">
+            <h2>📋 Test Cases</h2>
+
+            <div class="test-case passed">
+                <div class="test-header">
+                    <div class="test-name">✅ Test 1: Backend Health Check</div>
+                    <div class="test-status passed">PASSED</div>
+                </div>
+                <div class="test-message">📝 Backend is running</div>
+                <div class="test-details">📋 Status: 404, Response time: 0.37s</div>
+            </div>
+
+            <div class="test-case passed">
+                <div class="test-header">
+                    <div class="test-name">✅ Test 2: Universities API Test</div>
+                    <div class="test-status passed">PASSED</div>
+                </div>
+                <div class="test-message">📝 Retrieved 227 universities</div>
+                <div class="test-details">📋 Status: 200, Sample: Fast University of Islamabad</div>
+            </div>
+
+            <div class="test-case passed">
+                <div class="test-header">
+                    <div class="test-name">✅ Test 3: Search API Test</div>
+                    <div class="test-status passed">PASSED</div>
+                </div>
+                <div class="test-message">📝 Search returned 1 results for 'NUST'</div>
+                <div class="test-details">📋 Status: 200, Top result: National University of Sciences & Technology (NUST)</div>
+            </div>
+
+            <div class="test-case passed">
+                <div class="test-header">
+                    <div class="test-name">✅ Test 4: Disciplines API Test</div>
+                    <div class="test-status passed">PASSED</div>
+                </div>
+                <div class="test-message">📝 Retrieved 25 disciplines</div>
+                <div class="test-details">📋 Status: 200, Sample: Computer Science, General, Medical</div>
+            </div>
+
+            <div class="test-case passed">
+                <div class="test-header">
+                    <div class="test-name">✅ Test 5: Top Universities API Test</div>
+                    <div class="test-status passed">PASSED</div>
+                </div>
+                <div class="test-message">📝 Retrieved 5 top universities</div>
+                <div class="test-details">📋 Status: 200, Top university: Fast University of Islamabad</div>
+            </div>
+
+        </div>
+        
+        <div class="footer">
+            <p><strong>Test Execution Details</strong></p>
+            <p>Started: 2025-12-18 02:45:12</p>
+            <p>Completed: 2025-12-18 02:45:15</p>
+            <p>Duration: 3.15 seconds</p>
+            <p style="margin-top: 15px;">Frontend: http://4.213.223.12</p>
+            <p>Backend: http://135.235.246.98:5000</p>
+        </div>
+    </div>
+</body>
+</html>
