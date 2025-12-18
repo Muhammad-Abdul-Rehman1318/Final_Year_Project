@@ -1,0 +1,20 @@
+name: AwamAssist CI/CD with Testim
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  testim-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run Testim AI Tests
+        uses: testimio/github-action@v1
+        with:
+          api-key: ${{ secrets.TESTIM_API_KEY }}
+          project: ${{ secrets.TESTIM_PROJECT_ID }}
